@@ -22,7 +22,7 @@ namespace Questao5.Infrastructure.Sqlite
                 return;
 
             connection.Execute("CREATE TABLE contacorrente ( " +
-                               "idcontacorrente TEXT(37) PRIMARY KEY," +
+                               "idcontacorrent TEXT(37) PRIMARY KEY," +
                                "numero INTEGER(10) NOT NULL UNIQUE," +
                                "nome TEXT(100) NOT NULL," +
                                "ativo INTEGER(1) NOT NULL default 0," +

@@ -2,13 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="Dapper.FluentMap" Version="2.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	<PackageReference Include="Dapper" Version="2.0.35" />
+	<PackageReference Include="Dapper" Version="2.0.123" />
 	<PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.6" />
     <PackageReference Include="MediatR" Version="11.0.0" />
 	<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
@@ -40,10 +46,7 @@
     <Folder Include="Domain\Entities\" />
     <Folder Include="Domain\Enumerators\" />
     <Folder Include="Domain\Language\" />
-    <Folder Include="Infrastructure\Database\CommandStore\Requests\" />
-    <Folder Include="Infrastructure\Database\CommandStore\Responses\" />
-    <Folder Include="Infrastructure\Database\QueryStore\Requests\" />
-    <Folder Include="Infrastructure\Database\QueryStore\Responses\" />
+    <Folder Include="Infrastructure\Services" />
   </ItemGroup>
 
 </Project>
