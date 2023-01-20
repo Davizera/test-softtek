@@ -2,5 +2,5 @@
 
 public class TransactionCommandResponse
 {
-    public string  Id { get; set; }
+    public Guid Id { get; set; }
 }

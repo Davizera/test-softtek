@@ -3,7 +3,7 @@
 namespace Questao5.Domain.Entities;
 
 [Table("idempotencia")]
-public class Idempotency
+public class Idempotence
 {
     public string Key { get; set; }
     public string Request { get; set; }

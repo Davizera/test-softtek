@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Questao5.Application.Commands.Requests;
 using Questao5.Application.Commands.Responses;
@@ -13,13 +14,27 @@ public class BankController : ControllerBase
     
     public BankController(IMediator mediator) => _mediator = mediator;
 
+    [ProducesResponseType(typeof(TransactionCommandResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResult), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpPut]
-    public async Task<IActionResult> Transaction([FromBody]TransactionCommandRequest transaction)
+    public async Task<IActionResult> Transaction(TransactionCommandRequest request)
     {
-        TransactionCommandResponse result = await _mediator.Send(transaction);
+        TransactionCommandResponse result = await _mediator.Send(request);
         return Ok(result);
     }
-    
-    [HttpGet]
-    public async Task<IActionResult> GetBalance(object account) => Ok(new {account});
+
+    [ProducesResponseType(typeof(GetBalanceCommandResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BadRequestResult), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [HttpGet("GetBalance/{id}")]
+    public async Task<IActionResult> GetBalance(Guid id)
+    {
+        GetBalanceCommandRequest request = new()
+        {
+            AccountId = id
+        };
+        GetBalanceCommandResponse response = await _mediator.Send(request);
+        return Ok(response);
+    }
 }

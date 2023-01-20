@@ -8,7 +8,7 @@ namespace Questao5.Application.Commands.Requests;
 
 public class TransactionCommandRequest : IRequest<TransactionCommandResponse>
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public double Amount { get; set; }
-    public TransactionType TransactionType { get; set; }
+    public string TransactionType { get; set; }
 }

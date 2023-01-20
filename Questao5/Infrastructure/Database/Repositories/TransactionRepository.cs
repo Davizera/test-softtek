@@ -17,14 +17,13 @@ public class TransactionRepository : ITransactionRepository
         _connection = new SqliteConnection(databaseConfig.Name);
     }
 
-    public async Task<string> Save(Transaction transaction)
+    public async Task<Guid> Save(Transaction transaction)
     {
         var id = Guid.NewGuid();
         await using (_connection)
         {
-            var sql = @"insert into movimento (idmovimento, idcontacorrente, datamovimento, tipomovimento, valor) 
-                values (@Id, @AccountId, @Date, @TransactionType, @Amount);
-                select last_insert_rowid();";
+            const string sql = @"insert into movimento (idmovimento, idcontacorrente, datamovimento, tipomovimento, valor) 
+                values (@Id, @AccountId, @Date, @TransactionType, @Amount);";
 
             await _connection.ExecuteScalarAsync(sql,
                 new
@@ -32,48 +31,11 @@ public class TransactionRepository : ITransactionRepository
                     Id = id,
                     transaction.AccountId,
                     transaction.Date,
-                    TransactionType = transaction.TransactionType.ToString(),
+                    TransactionType = (char) transaction.TransactionType,
                     transaction.Amount
                 });
         }
 
-        return id.ToString();
-    }
-
-    public Task<IEnumerable<Transaction>> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> IsAccountRegistered(string id)
-    {
-        bool isAccountRegistered;
-
-        await using (_connection)
-        {
-            const string sql = @"select idcontacorrente,
-                    numero,
-                    nome,
-                    ativo
-                from contacorrente where idcontacorrente = @id";
-            var account = await _connection.QueryFirstOrDefaultAsync<Account>(sql, new {id});
-            isAccountRegistered = account is not null;
-        }
-
-        return isAccountRegistered;
-    }
-
-    public async Task<bool> IsAccountActive(string id)
-    {
-        bool isActive;
-
-        await using (_connection)
-        {
-            const string sql = "select * from contacorrente where idcontacorrente = @id";
-            var account = await _connection.QuerySingleOrDefaultAsync<Account>(sql, new {id});
-            isActive = account?.IsActive ?? false;
-        }
-
-        return isActive;
+        return id;
     }
 }

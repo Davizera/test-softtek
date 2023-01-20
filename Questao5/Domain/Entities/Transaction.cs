@@ -9,14 +9,9 @@ namespace Questao5.Domain.Entities;
 public class Transaction
 {
     [Key]
-    [Description("idmovimento")]
     public string Id { get; set; }
-    [Description("idcontacorrente")]
-    public string AccountId { get; set; }
-    [Description("valor")]
+    public Guid AccountId { get; set; }
     public double Amount { get; set; }
-    [Description("tipomovimento")]
     public TransactionType TransactionType { get; set; }
-    [Description("datamovimentacao")]
     public DateTimeOffset Date { get; set; }
 }

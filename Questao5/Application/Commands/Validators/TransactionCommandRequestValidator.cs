@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Validators;
 using Questao5.Application.Commands.Requests;
 using Questao5.Domain.Enumerators;
 using Questao5.Infrastructure.Database.Contracts;
@@ -7,21 +8,19 @@ namespace Questao5.Application.Commands.Validators;
 
 public class TransactionCommandRequestValidator : AbstractValidator<TransactionCommandRequest>
 {
-    public TransactionCommandRequestValidator(ITransactionRepository transactionRepository)
+    public TransactionCommandRequestValidator(IAccountRepository accountRepository)
     {
         RuleFor(request => request.Id)
             .Cascade(CascadeMode.Stop)
-            .MustAsync((id, _) => transactionRepository.IsAccountRegistered(id))
-            .WithMessage("TYPE: INVALID_ACCOUNT")
-            .MustAsync((id, _) => transactionRepository.IsAccountActive(id))
-            .WithMessage("TYPE: INACTIVE_ACCOUNT");
+            .SetAsyncValidator(new IsAccountRegisteredValidator<TransactionCommandRequest>(accountRepository))
+            .SetAsyncValidator(new IsAccountActiveValidator<TransactionCommandRequest>(accountRepository));
 
         RuleFor(request => request.Amount)
             .GreaterThan(0)
             .WithMessage("TYPE: INVALID_VALUE");
 
         RuleFor(request => request.TransactionType)
-            .IsInEnum()
+            .IsEnumName(typeof(TransactionType))
             .WithMessage("TYPE: INVALID_TYPE");
     }
 }

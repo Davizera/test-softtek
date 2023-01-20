@@ -25,6 +25,8 @@ FluentMapper.Initialize(configuration =>
     configuration.AddMap(new AccountMapping());
     configuration.AddMap(new IdempotencyMapping());
 });
+builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+builder.Services.AddTransient<IBalanceRepository, BalanceRepository>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

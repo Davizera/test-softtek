@@ -3,7 +3,7 @@ using Questao5.Domain.Entities;
 
 namespace Questao5.Infrastructure.Mapping;
 
-public class IdempotencyMapping : EntityMap<Idempotency>
+public class IdempotencyMapping : EntityMap<Idempotence>
 {
     public IdempotencyMapping()
     {

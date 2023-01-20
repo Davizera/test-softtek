@@ -4,6 +4,7 @@ using Questao5.Application.Commands.Responses;
 using Questao5.Domain.Entities;
 using Questao5.Infrastructure.Database.Contracts;
 using Microsoft.Extensions.Internal;
+using Questao5.Domain.Enumerators;
 
 namespace Questao5.Application.Handlers;
 
@@ -20,15 +21,18 @@ public class TransactionCommandHandler : IRequestHandler<TransactionCommandReque
     
     public async Task<TransactionCommandResponse> Handle(TransactionCommandRequest request, CancellationToken cancellationToken)
     {
+        var transactionType = Enum.Parse<TransactionType>(request.TransactionType);
+        
         Transaction transaction = new()
         {
             AccountId = request.Id,
-            TransactionType = request.TransactionType,
+            TransactionType = transactionType,
             Amount = request.Amount,
             Date = _clock.UtcNow,
         };
-        var response = await _repository.Save(transaction);
+        
+        Guid id = await _repository.Save(transaction);
 
-        return new TransactionCommandResponse {Id = response};
+        return new TransactionCommandResponse {Id = id};
     }
 }
