@@ -25,7 +25,6 @@ public class AccountRepository : IAccountRepository
                     ativo
                 from contacorrente where idcontacorrente like @id";
             var account = await _connection.QueryFirstOrDefaultAsync<Account>(sql, new {id});
-            throw new Exception();
             isAccountRegistered = account is not null;
         }
 

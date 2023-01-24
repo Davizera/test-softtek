@@ -3,6 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Questao5.Application.Commands.Requests;
 using Questao5.Application.Commands.Responses;
+using Questao5.Filters;
+using Questao5.Infrastructure.Database.Contracts;
+using Questao5.Infrastructure.Database.Repositories;
 
 namespace Questao5.Presentation;
 
@@ -12,12 +15,14 @@ public class BankController : ControllerBase
 {
     private readonly IMediator _mediator;
     
-    public BankController(IMediator mediator) => _mediator = mediator;
+    public BankController(IMediator mediator) => (_mediator) = (mediator);
 
-    [ProducesResponseType(typeof(TransactionCommandResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(BadRequestResult), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    [HttpPut]
+    [
+        ProducesResponseType(typeof(TransactionCommandResponse), (int) HttpStatusCode.OK),
+        ProducesResponseType(typeof(BadRequestResult), (int) HttpStatusCode.BadRequest),
+        ProducesResponseType((int) HttpStatusCode.InternalServerError), HttpPut, 
+        Idempotent()
+    ]
     public async Task<IActionResult> Transaction(TransactionCommandRequest request)
     {
         TransactionCommandResponse result = await _mediator.Send(request);
